@@ -19,16 +19,21 @@
 
 	<!-- 开启IOC注解扫描 -->
 	<context:component-scan base-package="com.microrefit.*" />
-	
+
 	<!-- 引入配置文件 -->
 	<bean id="configProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="locations">
 			<list>
-				<!-- <value>classpath*:application.properties</value>
-				<value>classpath*:LDAP.properties</value> -->
+				<value>classpath*:jdbc.properties</value>
+				<value>classpath*:hibernate.properties</value>
 			</list>
 		</property>
+	</bean>
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
 	</bean>
 
 	<!-- Jpa Entity Manager 配置 -->
@@ -54,11 +59,11 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/demo?useUnicode=true&amp;characterEncoding=UTF-8" />
-		<property name="username" value="root" />
-		<property name="password" value="1234" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
 	</bean>
-	
+
 	<bean id="hibernateJpaVendorAdapter"
 		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 
@@ -94,6 +99,9 @@
 
 	<!-- 配置Spring Data JPA扫描目录 -->
 	<!-- Spring Data Jpa配置 -->
- 	<jpa:repositories base-package="com.microrefit.dao"  transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory" repository-impl-postfix="Impl"/>
-	
+	<jpa:repositories base-package="com.microrefit.dao"
+		transaction-manager-ref="transactionManager"
+		entity-manager-factory-ref="entityManagerFactory"
+		repository-impl-postfix="Impl" />
+
 </beans>
