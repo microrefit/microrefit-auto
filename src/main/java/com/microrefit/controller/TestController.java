@@ -17,7 +17,6 @@ public class TestController extends BaseController{
 	UserService userService;
 
 	@RequestMapping("/")
-	@ResponseBody
 	public String index() {
 		return "index";
 	}
